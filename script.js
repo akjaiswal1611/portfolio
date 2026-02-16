@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initCounterAnimation();
     initActiveNavLink();
+    initContactForm();
 });
 
 // --- Navbar scroll effect ---
@@ -141,4 +142,49 @@ function initActiveNavLink() {
             }
         });
     }, { passive: true });
+}
+
+// --- Contact form ---
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btnText = form.querySelector('.btn-text');
+        const btnLoading = form.querySelector('.btn-loading');
+        const status = document.getElementById('formStatus');
+        const submitBtn = form.querySelector('.btn-submit');
+
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline';
+        submitBtn.disabled = true;
+        status.textContent = '';
+        status.className = 'form-status';
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                status.textContent = 'Message sent successfully! I\'ll get back to you soon.';
+                status.classList.add('success');
+                form.reset();
+            } else {
+                status.textContent = 'Something went wrong. Please try again or email me directly.';
+                status.classList.add('error');
+            }
+        } catch {
+            status.textContent = 'Something went wrong. Please try again or email me directly.';
+            status.classList.add('error');
+        }
+
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+        submitBtn.disabled = false;
+    });
 }
