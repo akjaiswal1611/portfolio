@@ -170,16 +170,18 @@ function initContactForm() {
                 headers: { 'Accept': 'application/json' }
             });
 
-            if (response.ok) {
+            const data = await response.json();
+
+            if (data.success) {
                 status.textContent = 'Message sent successfully! I\'ll get back to you soon.';
                 status.classList.add('success');
                 form.reset();
             } else {
-                status.textContent = 'Something went wrong. Please try again or email me directly.';
+                status.textContent = 'Something went wrong. Please try again later.';
                 status.classList.add('error');
             }
         } catch {
-            status.textContent = 'Something went wrong. Please try again or email me directly.';
+            status.textContent = 'Something went wrong. Please try again later.';
             status.classList.add('error');
         }
 
