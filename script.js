@@ -170,9 +170,7 @@ function initContactForm() {
                 headers: { 'Accept': 'application/json' }
             });
 
-            const data = await response.json();
-
-            if (data.success) {
+            if (response.ok) {
                 status.textContent = 'Message sent successfully! I\'ll get back to you soon.';
                 status.classList.add('success');
                 form.reset();
